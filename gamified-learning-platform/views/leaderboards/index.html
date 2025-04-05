@@ -1,0 +1,64 @@
+{% extends "../layouts/base.html" %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-4 md:mb-0">Leaderboards</h1>
+    
+    <div class="flex space-x-2">
+      <a href="?timePeriod=weekly" 
+         class="px-4 py-2 rounded-md text-sm font-medium {% if timePeriod == 'weekly' %}bg-indigo-600 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}">
+        Weekly
+      </a>
+      <a href="?timePeriod=monthly" 
+         class="px-4 py-2 rounded-md text-sm font-medium {% if timePeriod == 'monthly' %}bg-indigo-600 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}">
+        Monthly
+      </a>
+      <a href="?timePeriod=all-time" 
+         class="px-4 py-2 rounded-md text-sm font-medium {% if timePeriod == 'all-time' %}bg-indigo-600 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}">
+        All Time
+      </a>
+    </div>
+  </div>
+
+  <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+    <ul class="divide-y divide-gray-200">
+      {% for user in users %}
+      <li class="px-6 py-4">
+        <div class="flex items-center">
+          <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
+            <span class="text-indigo-600 font-medium">{{ user.username|first|upper }}</span>
+          </div>
+          <div class="ml-4 flex-1">
+            <div class="flex justify-between">
+              <p class="text-sm font-medium text-gray-900">{{ user.username }}</p>
+              <p class="text-sm text-gray-500">{{ user.points }} points</p>
+            </div>
+            <div class="mt-1">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+                Level {{ (user.points/100)|round(0, 'floor') }}
+              </span>
+              {% if loop.index <= 3 %}
+              <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {% if loop.index == 1 %}bg-yellow-100 text-yellow-800{% elif loop.index == 2 %}bg-gray-100 text-gray-800{% else %}bg-amber-100 text-amber-800{% endif %}">
+                {% if loop.index == 1 %}🥇{% elif loop.index == 2 %}🥈{% else %}🥉{% endif %}
+              </span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="mt-6 flex justify-between items-center">
+    <button class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+      Previous
+    </button>
+    <span class="text-sm text-gray-700">Page 1 of 5</span>
+    <button class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+      Next
+    </button>
+  </div>
+</div>
+{% endblock %}
